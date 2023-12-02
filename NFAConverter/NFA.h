@@ -9,25 +9,25 @@
 #include "../RulesParser/RegularExpression.h"
 #include "State.h"
 #include <stack>
+#include "../Util/Util.h"
 
 class NFA {
     private:
-        RegularExpression regExp;
-        State* startState;
         std::stack<std::stack<State*>> nfaStack;
-        bool insideBrackets;
+        std::stack<std::stack<std::string>> disjunctionStack;
 
-    public:
-        NFA(RegularExpression &regExp);
-        void addEpsilonTransition(State* from, State* to);
-        void addSymbolTransition(State* from, char symbol, State* to);
+        static void addSymbolTransition(State* from, char symbol, State* to);
         void concatenate();
         void disjunction();
         void kleeneClosure();
         void positiveClosure();
         void rebaseStacks();
-        State* convertToNFA(const std::string& regex);
+        void initializeStacks();
 
+    public:
+        NFA();
+        static void addEpsilonTransition(State* from, State* to);
+        std::pair<State*, State*> convertToNFA(std::string regex, std::string tokenName, int priority);
 
 };
 

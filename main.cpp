@@ -20,6 +20,5 @@ int main(int argc, char *argv[]) {
     for (const RegularExpression& regExp : regularExpressions) {
         std::cout << regExp.toString() << "\n";
     }
-
     return 0;
 }

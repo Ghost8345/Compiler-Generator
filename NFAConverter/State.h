@@ -15,6 +15,8 @@ class State {
     public:
         std::vector<Transition> transitions;
         bool isFinal;
+        std::string tokenName;
+        int priority;
 
         State();
         void addTransition(Transition transition);

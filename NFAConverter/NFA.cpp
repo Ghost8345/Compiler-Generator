@@ -4,11 +4,7 @@
 
 #include "NFA.h"
 
-NFA::NFA(RegularExpression &regExp) {
-    this->regExp = regExp;
-    this->startState = new State();
-    this->insideBrackets = false;
-}
+NFA::NFA() = default;
 
 void NFA::addEpsilonTransition(State* from, State* to) {
     Transition transition('\0', to);
@@ -71,18 +67,6 @@ void NFA::kleeneClosure(){
     nfaStack.top().push(initial);
     nfaStack.top().push(final);
 }
-
-void NFA::rebaseStacks(){
-    State* bracketsEnd = nfaStack.top().top();
-    nfaStack.top().pop();
-    State* bracketsStart = nfaStack.top().top();
-    nfaStack.top().pop();
-
-    nfaStack.pop();     // pop the brackets stack
-    nfaStack.top().push(bracketsStart);
-    nfaStack.top().push(bracketsEnd);
-    concatenate();
-}
 void NFA::positiveClosure(){
     State* end = nfaStack.top().top();
     nfaStack.top().pop();
@@ -97,24 +81,54 @@ void NFA::positiveClosure(){
     nfaStack.top().push(initial);
     nfaStack.top().push(final);
 }
-State* NFA::convertToNFA(const std::string& regex) {
-    std::stack<State*> initialStack;
-    nfaStack.push(initialStack);
+void NFA::rebaseStacks(){
+    State* bracketsEnd = nfaStack.top().top();
+    nfaStack.top().pop();
+    State* bracketsStart = nfaStack.top().top();
+    nfaStack.top().pop();
+
+    nfaStack.pop();     // pop the brackets stack
+    nfaStack.top().push(bracketsStart);
+    nfaStack.top().push(bracketsEnd);
+}
+void NFA::initializeStacks(){
+    std::stack<State*> initialNfaStack;
+    nfaStack.push(initialNfaStack);
+    std::stack<std::string> initialDisjunctionStack;
+    disjunctionStack.push(initialDisjunctionStack);
+}
+
+std::pair<State*, State*> NFA::convertToNFA(std::string regex, std::string tokenName, int priority) {
+    initializeStacks();
     for (int i = 0; i < regex.size(); i++) {
         char symbol = regex[i];
-        if (symbol == '|') {        //left for m5m5a
-            disjunction();
+        if (symbol == '|') {
+            disjunctionStack.top().push(std::string("|"));
         } else if (symbol == '(') {
-            std::stack<State*> bracketsStack;
-            nfaStack.push(bracketsStack);
+            std::stack<State*> bracketsNfaStack;
+            nfaStack.push(bracketsNfaStack);
+            std::stack<std::string> bracketsDisjunctionStack;
+            disjunctionStack.push(bracketsDisjunctionStack);
         } else if (symbol == ')') {
+            disjunctionStack.pop();
             if (regex[i+1] == '*'){
                 kleeneClosure();
+                i++;
             } else if (regex[i+1] == '+') {
                 positiveClosure();
+                i++;
             }
             rebaseStacks();
+            if ((not disjunctionStack.empty()) and (not disjunctionStack.top().empty()) and disjunctionStack.top().top() == "|"){
+                disjunction();
+            }else {
+                concatenate();
+            }
         }else{
+            if (symbol == '\\'){
+                symbol = regex[i+1];
+                i++;
+            }
             State* start = new State();
             State* end = new State();
             addSymbolTransition(start, symbol, end);
@@ -126,9 +140,11 @@ State* NFA::convertToNFA(const std::string& regex) {
 
     State* NFAEnd = nfaStack.top().top();
     NFAEnd->isFinal = true;
+    NFAEnd->tokenName = tokenName;
+    NFAEnd->priority = priority;
     nfaStack.top().pop();
     State* NFAStart = nfaStack.top().top();
-
-    return NFAStart;
+    std::pair<State*, State*>regexNFA(NFAStart, NFAEnd);
+    return regexNFA;
 }
 
