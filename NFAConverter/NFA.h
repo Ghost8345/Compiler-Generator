@@ -14,7 +14,8 @@ class NFA {
     private:
         RegularExpression regExp;
         State* startState;
-        std::stack<State*> nfaStack;
+        std::stack<std::stack<State*>> nfaStack;
+        bool insideBrackets;
 
     public:
         NFA(RegularExpression &regExp);
@@ -24,6 +25,7 @@ class NFA {
         void disjunction();
         void kleeneClosure();
         void positiveClosure();
+        void rebaseStacks();
         State* convertToNFA(const std::string& regex);
 
 
