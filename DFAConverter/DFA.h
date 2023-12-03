@@ -13,7 +13,6 @@ class DFA {
 private:
     NFA nfa;
     State* startState;
-    std::vector<State> transitionTable;
 
 
 public:
