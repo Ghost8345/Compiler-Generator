@@ -17,7 +17,7 @@ void NFA::addSymbolTransition(State* from, char symbol, State* to){
 }
 
 void NFA::concatenate(){
-    if(nfaStack.top().size() == 2){ return;}
+    if (nfaStack.top().size() == 2){ return;}
 
     State* end2 = nfaStack.top().top();
     nfaStack.top().pop();
@@ -127,15 +127,15 @@ std::pair<State*, State*> NFA::convertToNfa(std::string regex, std::string token
             rebaseStacks();
             if ((not disjunctionStack.empty()) and (not disjunctionStack.top().empty()) and disjunctionStack.top().top() == "|"){
                 disjunction();
-            }else {
+            } else {
                 concatenate();
             }
-        }else{
+        } else{
             // Skip character
             if (symbol == '\\'){
                 symbol = regex[i+1];
                 // Epsilon transition entered through the rules
-                if(symbol == 'L'){
+                if (symbol == 'L'){
                     symbol = '\0';
                 }
                 i++;
