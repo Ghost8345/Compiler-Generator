@@ -4,12 +4,14 @@ set(HEADER_FILES
         Transition.h
         State.h
         NFA.h
+        NFACombiner.h
 )
 
 set(SOURCE_FILES
         Transition.cpp
         State.cpp
         NFA.cpp
+        NFACombiner.cpp
 )
 
 
