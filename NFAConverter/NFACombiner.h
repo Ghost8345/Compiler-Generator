@@ -5,7 +5,6 @@
 #ifndef COMPILER_NFACOMBINER_H
 #define COMPILER_NFACOMBINER_H
 
-
 #include "../RulesParser/RegularExpression.h"
 #include "State.h"
 #include "NFA.h"

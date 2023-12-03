@@ -131,10 +131,16 @@ std::pair<State*, State*> NFA::convertToNfa(std::string regex, std::string token
                 concatenate();
             }
         }else{
+            // Skip character
             if (symbol == '\\'){
                 symbol = regex[i+1];
+                // Epsilon transition entered through the rules
+                if(symbol == 'L'){
+                    symbol = '\0';
+                }
                 i++;
             }
+
             State* start = new State();
             State* end = new State();
             addSymbolTransition(start, symbol, end);

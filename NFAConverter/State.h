@@ -5,7 +5,6 @@
 #ifndef COMPILER_STATE_H
 #define COMPILER_STATE_H
 
-
 #include <vector>
 #include "Transition.h"
 

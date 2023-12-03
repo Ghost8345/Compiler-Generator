@@ -14,13 +14,18 @@ NFACombiner::NFACombiner(std::vector<RegularExpression>& regExps) {
     this->completeNfa = initial;
 }
 
-std::unordered_map<std::pair<State *, char>, State *, PairHash, PairEqual> NFACombiner::extractTableRepresentation() {
-    std::unordered_map<std::pair<State *, char>, State *, PairHash, PairEqual> table;
-    std::stack<State *> frontier;
+std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> NFACombiner::extractTableRepresentation() {
+    std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> table;
+    std::stack<State*> frontier;
+    std::unordered_map<State*, int> visited;
     frontier.push(completeNfa);
     while (not frontier.empty()) {
-        State *currentState = frontier.top();
+        State* currentState = frontier.top();
         frontier.pop();
+        if(visited.contains(currentState)){
+            continue;
+        }
+        visited[currentState] = 1;
         for (Transition transition: currentState->transitions) {
             table[std::pair(currentState, transition.getInput())] = transition.getNextState();
             frontier.push(transition.getNextState());

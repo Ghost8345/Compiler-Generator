@@ -3,6 +3,7 @@
 //
 
 #include "Transition.h"
+
 Transition::Transition(char input, State* nextState) {
     this->input = input;
     this->nextState = nextState;
