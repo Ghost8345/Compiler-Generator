@@ -10,15 +10,17 @@ void NFA::addEpsilonTransition(State* from, State* to) {
     Transition transition('\0', to);
     from->addTransition(transition);
 }
+
 void NFA::addSymbolTransition(State* from, char symbol, State* to){
     Transition transition(symbol, to);
     from->addTransition(transition);
 }
+
 void NFA::concatenate(){
-    if(nfaStack.size() == 2){ return;}
+    if(nfaStack.top().size() == 2){ return;}
 
     State* end2 = nfaStack.top().top();
-    nfaStack.pop();
+    nfaStack.top().pop();
     State* start2 = nfaStack.top().top();
     nfaStack.top().pop();
 
@@ -31,6 +33,7 @@ void NFA::concatenate(){
     nfaStack.top().push(start1);
     nfaStack.top().push(end2);
 }
+
 void NFA::disjunction() {
     State* end2 = nfaStack.top().top();
     nfaStack.top().pop();
@@ -67,6 +70,7 @@ void NFA::kleeneClosure(){
     nfaStack.top().push(initial);
     nfaStack.top().push(final);
 }
+
 void NFA::positiveClosure(){
     State* end = nfaStack.top().top();
     nfaStack.top().pop();
@@ -81,6 +85,7 @@ void NFA::positiveClosure(){
     nfaStack.top().push(initial);
     nfaStack.top().push(final);
 }
+
 void NFA::rebaseStacks(){
     State* bracketsEnd = nfaStack.top().top();
     nfaStack.top().pop();
@@ -91,6 +96,7 @@ void NFA::rebaseStacks(){
     nfaStack.top().push(bracketsStart);
     nfaStack.top().push(bracketsEnd);
 }
+
 void NFA::initializeStacks(){
     std::stack<State*> initialNfaStack;
     nfaStack.push(initialNfaStack);
@@ -98,7 +104,7 @@ void NFA::initializeStacks(){
     disjunctionStack.push(initialDisjunctionStack);
 }
 
-std::pair<State*, State*> NFA::convertToNFA(std::string regex, std::string tokenName, int priority) {
+std::pair<State*, State*> NFA::convertToNfa(std::string regex, std::string tokenName, int priority) {
     initializeStacks();
     for (int i = 0; i < regex.size(); i++) {
         char symbol = regex[i];
@@ -138,13 +144,13 @@ std::pair<State*, State*> NFA::convertToNFA(std::string regex, std::string token
         }
     }
 
-    State* NFAEnd = nfaStack.top().top();
-    NFAEnd->isFinal = true;
-    NFAEnd->tokenName = tokenName;
-    NFAEnd->priority = priority;
+    State* nfaEnd = nfaStack.top().top();
+    nfaEnd->isFinal = true;
+    nfaEnd->tokenName = tokenName;
+    nfaEnd->priority = priority;
     nfaStack.top().pop();
-    State* NFAStart = nfaStack.top().top();
-    std::pair<State*, State*>regexNFA(NFAStart, NFAEnd);
-    return regexNFA;
+    State* nfaStart = nfaStack.top().top();
+    std::pair<State*, State*>regexNfa(nfaStart, nfaEnd);
+    return regexNfa;
 }
 

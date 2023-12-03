@@ -1,5 +1,6 @@
 #include <iostream>
 #include "RulesParser/RulesConverter.h"
+#include "NFAConverter/NFACombiner.h"
 
 int main(int argc, char *argv[]) {
 
@@ -20,5 +21,10 @@ int main(int argc, char *argv[]) {
     for (const RegularExpression& regExp : regularExpressions) {
         std::cout << regExp.toString() << "\n";
     }
+
+    NFACombiner nfaCombiner(regularExpressions);
+    std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> table = nfaCombiner.extractTableRepresentation();
+    State* nfaComplete = nfaCombiner.getCompleteNfa();
+    std::cout << nfaComplete->transitions.size() << std::endl;
     return 0;
 }

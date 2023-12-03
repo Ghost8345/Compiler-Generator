@@ -27,7 +27,7 @@ class NFA {
     public:
         NFA();
         static void addEpsilonTransition(State* from, State* to);
-        std::pair<State*, State*> convertToNFA(std::string regex, std::string tokenName, int priority);
+        std::pair<State*, State*> convertToNfa(std::string regex, std::string tokenName, int priority);
 
 };
 

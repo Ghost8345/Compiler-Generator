@@ -5,14 +5,30 @@
 #include "NFACombiner.h"
 
 NFACombiner::NFACombiner(std::vector<RegularExpression>& regExps) {
-    this->regExps = regExps;
     State* initial = new State();
     for (const RegularExpression& regExp: regExps){
         NFA nfa = NFA();
-        std::pair<State*, State*> localNFA = nfa.convertToNFA(regExp.getRegex(), regExp.getName(), regExp.getPriority());
-        NFA::addEpsilonTransition(initial, localNFA.first);
+        std::pair<State*, State*> localNfa = nfa.convertToNfa(regExp.getRegex(), regExp.getName(), regExp.getPriority());
+        NFA::addEpsilonTransition(initial, localNfa.first);
     }
-    this->completeNFA = initial;
-
+    this->completeNfa = initial;
 }
 
+std::unordered_map<std::pair<State *, char>, State *, PairHash, PairEqual> NFACombiner::extractTableRepresentation() {
+    std::unordered_map<std::pair<State *, char>, State *, PairHash, PairEqual> table;
+    std::stack<State *> frontier;
+    frontier.push(completeNfa);
+    while (not frontier.empty()) {
+        State *currentState = frontier.top();
+        frontier.pop();
+        for (Transition transition: currentState->transitions) {
+            table[std::pair(currentState, transition.getInput())] = transition.getNextState();
+            frontier.push(transition.getNextState());
+        }
+    }
+    return table;
+}
+
+State* NFACombiner::getCompleteNfa() {
+    return completeNfa;
+}
