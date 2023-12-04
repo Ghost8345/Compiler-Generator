@@ -15,7 +15,7 @@ private:
 
 public:
     STRow(std::string token,std::string tokenType);
-    friend std::ostream& operator<<(std::ostream& os, const STRow& obj);
+    friend std::ostream& operator<<(std::ostream& os, const STRow& strow);
 
 };
 

@@ -19,8 +19,8 @@ void STGenerator::execute(const std::string& scriptFilePath){
         currentState = currentState->moveTo(c);
         if (reachedDeadEnd()){
             if (noMatchesFoundYet()){
-                //create error
-                //pushback error
+                SyntaxError e(tokenStartIdx,currentCharIdx);
+                errors.push_back(e);
             }else{
                 currentCharIdx = lastMatchIdx;
                 tokenUnlocked();

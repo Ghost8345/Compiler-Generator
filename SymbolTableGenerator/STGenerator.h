@@ -7,6 +7,7 @@
 
 #include "../DFAConverter/DFA.h"
 #include "STRow.h"
+#include "SyntaxError.h"
 
 class STGenerator {
 private:
