@@ -19,7 +19,7 @@ class State {
 
         State();
         void addTransition(Transition transition);
-
+        State* moveTo(char input)
 };
 
 
