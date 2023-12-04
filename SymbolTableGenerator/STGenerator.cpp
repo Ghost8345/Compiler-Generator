@@ -7,14 +7,16 @@
 #include <iostream>
 #include <utility>
 
-STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {}
+STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {
+    currentState = dfa.getStartState();
+}
 
 void STGenerator::execute(const std::string& scriptFilePath){
     std::ifstream file(scriptFilePath);
     if (file.is_open()) {
         char c;
         while (file.get(c)) {
-            currentToken += c;
+
         }
         file.close();
     } else {

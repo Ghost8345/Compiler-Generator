@@ -16,6 +16,7 @@ private:
     std::string currentToken;
     std::string lastMatchedTokenType;
     std::vector<STRow> symbolTable;
+    State* currentState;
 
     void reset();
     void tokenUnlocked();
