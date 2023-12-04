@@ -13,20 +13,23 @@ private:
     DFA dfa;
     int currentCharIdx = 0;
     int lastMatchIdx = -1;
-    std::string currentToken;
+    int tokenStartIdx = 0;
+    std::string input;
     std::string lastMatchedTokenType;
     std::vector<STRow> symbolTable;
+    std::vector<SyntaxError> errors;
     State* currentState;
 
     void reset();
     void tokenUnlocked();
-
+    [[nodiscard]] bool noMatchesFoundYet() const;
+    bool reachedDeadEnd();
+    void readScriptFile(const std::string& filepath);
 
 public:
     explicit STGenerator(DFA &dfa);
     void execute(const std::string& scriptFilePath);
-
-
+    bool foundMatch();
 };
 
 #endif //COMPILER_STGENERATOR_H

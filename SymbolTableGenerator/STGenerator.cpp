@@ -6,36 +6,70 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
+#include <sstream>
 
 STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {
     currentState = dfa.getStartState();
 }
 
 void STGenerator::execute(const std::string& scriptFilePath){
-    std::ifstream file(scriptFilePath);
-    if (file.is_open()) {
-        char c;
-        while (file.get(c)) {
-
+    readScriptFile(scriptFilePath);
+    while (currentCharIdx!=input.size()){
+        char c = input[currentCharIdx];
+        currentState = currentState->moveTo(c);
+        if (reachedDeadEnd()){
+            if (noMatchesFoundYet()){
+                //create error
+                //pushback error
+            }else{
+                currentCharIdx = lastMatchIdx;
+                tokenUnlocked();
+            }
+        }else if (foundMatch()){
+            lastMatchIdx = currentCharIdx;
+            lastMatchedTokenType = currentState->tokenName;
         }
-        file.close();
-    } else {
-        std::cerr << "Error: Could not open file '" << scriptFilePath << "'" << std::endl;
+        currentCharIdx ++;
     }
 }
 
 void STGenerator::reset() {
-    currentToken = "";
     lastMatchedTokenType = "";
-    currentCharIdx = 0;
     lastMatchIdx = -1;
+    tokenStartIdx = 0;
 }
 
 void STGenerator::tokenUnlocked() {
-    STRow strow(currentToken.substr(0,lastMatchIdx+1),lastMatchedTokenType);
+    STRow strow(input.substr(tokenStartIdx,lastMatchIdx+1),lastMatchedTokenType);
     symbolTable.push_back(strow);
     reset();
 }
+
+bool STGenerator::noMatchesFoundYet() const {
+    return lastMatchIdx==-1;
+}
+
+bool STGenerator::reachedDeadEnd() {
+    return currentState== nullptr;
+}
+
+void STGenerator::readScriptFile(const std::string &filepath) {
+    std::ifstream file(filepath);
+    if (file.is_open()) {
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        input = buffer.str();
+        file.close();
+    } else {
+        std::cerr << "Error opening file: " << filepath << std::endl;
+    }
+}
+
+bool STGenerator::foundMatch() {
+    return currentState->isFinal;
+}
+
+
 
 
 
