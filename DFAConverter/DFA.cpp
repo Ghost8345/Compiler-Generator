@@ -4,7 +4,9 @@
 
 #include "DFA.h"
 
-DFA::DFA(NFA &nfa) {
-    this->nfa = nfa;
-    this->startState = new State();
+DFA::DFA(NFA &nfa) : nfa(std::move(nfa)) {}
+
+State *DFA::getStartState() {
+    return startState;
 }
+

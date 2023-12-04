@@ -16,7 +16,8 @@ private:
 
 
 public:
-    DFA(NFA &nfa);
+    explicit DFA(NFA &nfa);
+    State* getStartState();
 
 
 
