@@ -18,7 +18,8 @@ class State {
         int priority;
 
         State();
-        void addTransition(Transition transition);
+        State(bool isFinal,const std::string& tokenName,int p);
+    void addTransition(Transition transition);
         State* moveTo(char input)
 };
 
