@@ -19,8 +19,8 @@ State *State::moveTo(char input) {
     return nullptr;
 }
 
-State::State(bool isFinal, const std::string& tokenName, int p) {
-    this->isFinal = isFinal;
+State::State(const std::string& tokenName, int p) {
+    this->isFinal = true;
     this->tokenName = tokenName;
     this->priority = p;
 }
