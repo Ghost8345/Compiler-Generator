@@ -1,6 +1,8 @@
 #include <iostream>
 #include "RulesParser/RulesConverter.h"
 #include "NFAConverter/NFACombiner.h"
+#include "SymbolTableGenerator/STGenerator.h"
+
 int main(int argc, char *argv[]) {
 
     if (argc != 2){
@@ -27,7 +29,6 @@ int main(int argc, char *argv[]) {
     State* nfaComplete = nfaCombiner.getCompleteNfa();
 
     std::cout << nfaComplete->transitions.size() << '\n';
-
 
     return 0;
 }
