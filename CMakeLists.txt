@@ -8,6 +8,7 @@ add_executable(Compiler main.cpp)
 target_link_libraries(Compiler Util_lib)
 target_link_libraries(Compiler RulesParser_lib)
 target_link_libraries(Compiler NFAConverter_lib)
+target_link_libraries(Compiler DFAConverter_lib)
 target_link_libraries(Compiler SymbolTableGenerator_lib)
 
 
@@ -16,5 +17,6 @@ add_subdirectory(Util)
 add_subdirectory(RulesParser)
 add_subdirectory(Google_tests)
 add_subdirectory(NFAConverter)
+add_subdirectory(DFAConverter)
 add_subdirectory(SymbolTableGenerator)
 
