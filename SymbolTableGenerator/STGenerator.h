@@ -17,24 +17,21 @@ private:
     int tokenStartIdx = 0;
     std::string input;
     std::string lastMatchedTokenType;
-    std::vector<STRow> symbolTable;
-    std::vector<SyntaxError> errors;
-    State* currentState;
+    State* currentState{};
 
+    void readScriptFile(const std::string& filepath);
+    void newInputReset();
     void newTokenReset();
     void tokenUnlocked();
+    void getStartState();
     [[nodiscard]] bool noMatchesFoundYet() const;
-    bool reachedDeadEnd();
-    void readScriptFile(const std::string& filepath);
+    [[nodiscard]] bool reachedDeadEnd();
+    [[nodiscard]] bool foundMatch();
+
 
 public:
     explicit STGenerator(DFA &dfa);
     void execute(const std::string& scriptFilePath);
-    bool foundMatch();
-
-    void printOutput();
-
-    void newInputReset();
 };
 
 #endif //COMPILER_STGENERATOR_H

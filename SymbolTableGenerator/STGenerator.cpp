@@ -8,9 +8,7 @@
 #include <utility>
 #include <sstream>
 
-STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {
-    currentState = dfa.getStartState();
-}
+STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {}
 
 void STGenerator::execute(const std::string& scriptFilePath){
     newInputReset();
@@ -32,10 +30,10 @@ void STGenerator::execute(const std::string& scriptFilePath){
         }
         currentCharIdx ++;
     }
-    printOutput();
 }
 
 void STGenerator::newTokenReset() {
+    getStartState();
     lastMatchedTokenType = "";
     tokenStartIdx = lastMatchIdx+1;
     lastMatchIdx = -1;
@@ -43,9 +41,6 @@ void STGenerator::newTokenReset() {
 
 void STGenerator::newInputReset() {
     input = "";
-    currentState = nullptr;
-    symbolTable.clear();
-    errors.clear();
     newTokenReset();
 }
 
@@ -79,10 +74,10 @@ bool STGenerator::foundMatch() {
     return currentState->isFinal;
 }
 
-void STGenerator::printOutput() {
-    for (const auto& strow : symbolTable) std::cout << strow;
-    for (const auto& e : errors) std::cout << e;
+void STGenerator::getStartState(){
+    currentState = dfa.getStartState();
 }
+
 
 
 
