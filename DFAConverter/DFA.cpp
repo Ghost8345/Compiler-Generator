@@ -10,3 +10,4 @@ State *DFA::getStartState() {
     return startState;
 }
 
+DFA::DFA(State *startState) : startState(std::move(startState)){}
