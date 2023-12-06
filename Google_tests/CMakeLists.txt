@@ -6,9 +6,11 @@ add_executable(Google_Tests_run UtilsTest.cpp
         RulesConverterTest.cpp
         RegularDefinitionTest.cpp
         NFATest.cpp
-        IntegrationTest.cpp)
+        IntegrationTest.cpp
+        STGeneratorTest.cpp)
 
 target_link_libraries(Google_Tests_run gtest gtest_main)
 target_link_libraries(Google_Tests_run Util_lib)
 target_link_libraries(Google_Tests_run RulesParser_lib)
 target_link_libraries(Google_Tests_run NFAConverter_lib)
+target_link_libraries(Google_Tests_run STGenerator_lib)

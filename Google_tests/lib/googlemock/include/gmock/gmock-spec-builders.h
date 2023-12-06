@@ -1013,7 +1013,7 @@ class TypedExpectation<R(Args...)> : public ExpectationBase {
   // `operator Action<F>` but not `operator OnceAction<F>`.
   //
   // This is templated in order to cause the overload above to be preferred
-  // when the input is convertible to either type.
+  // when the currentToken is convertible to either type.
   template <int&... ExplicitArgumentBarrier, typename = void>
   TypedExpectation& WillOnce(Action<F> action) {
     ExpectSpecProperty(last_clause_ <= kWillOnce,

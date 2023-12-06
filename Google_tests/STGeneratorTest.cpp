@@ -13,6 +13,8 @@ TEST(STGeneration, WithoutCombinedStates){
     std::string TOKEN_1 = "T1";
     std::string TOKEN_2 = "T2";
     std::string TOKEN_3 = "T3";
+    ///Creating DFA
+    //Defining States
     State A;
     State B(TOKEN_1);
     State C(TOKEN_2);
@@ -35,6 +37,8 @@ TEST(STGeneration, WithoutCombinedStates){
     State T(TOKEN_1);
     State U(TOKEN_2);
     State V(TOKEN_3);
+
+
 
 
 

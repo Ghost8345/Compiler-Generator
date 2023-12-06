@@ -480,7 +480,7 @@ class OnceAction<Result(Args...)> final {
                 int>::type = 0>
   OnceAction(Callable&& callable)  // NOLINT
                                    // Call the constructor above with a callable
-                                   // that ignores the input arguments.
+                                   // that ignores the currentToken arguments.
       : OnceAction(IgnoreIncomingArguments<typename std::decay<Callable>::type>{
             std::forward<Callable>(callable)}) {}
 
@@ -957,12 +957,12 @@ class ReturnAction final {
   class Impl final {
    public:
     // The constructor used when the return value is allowed to move from the
-    // input value (i.e. we are converting to OnceAction).
+    // currentToken value (i.e. we are converting to OnceAction).
     explicit Impl(R&& input_value)
         : state_(new State(std::move(input_value))) {}
 
     // The constructor used when the return value is not allowed to move from
-    // the input value (i.e. we are converting to Action).
+    // the currentToken value (i.e. we are converting to Action).
     explicit Impl(const R& input_value) : state_(new State(input_value)) {}
 
     U operator()() && { return std::move(state_->value); }
@@ -972,7 +972,7 @@ class ReturnAction final {
     // We put our state on the heap so that the compiler-generated copy/move
     // constructors work correctly even when U is a reference-like type. This is
     // necessary only because we eagerly create State::value (see the note on
-    // that symbol for details). If we instead had only the input value as a
+    // that symbol for details). If we instead had only the currentToken value as a
     // member then the default constructors would work fine.
     //
     // For example, when R is std::string and U is std::string_view, value is a
@@ -1000,9 +1000,9 @@ class ReturnAction final {
             // For the same reason as above we make an implicit conversion to U
             // before initializing the value.
             //
-            // Unlike above we provide the input value as an rvalue to the
+            // Unlike above we provide the currentToken value as an rvalue to the
             // implicit conversion because this is a OnceAction: it's fine if it
-            // wants to consume the input value.
+            // wants to consume the currentToken value.
             value(ImplicitCast_<U>(std::move(input_value))) {}
 
       // A copy of the value originally provided by the user. We retain this in
@@ -1020,12 +1020,12 @@ class ReturnAction final {
       // made the Action<U()> conversion operator eagerly convert the R value to
       // U, but without keeping the R alive. This broke the use case discussed
       // in the documentation for Return, making reference-like types such as
-      // std::string_view not safe to use as U where the input type R is a
+      // std::string_view not safe to use as U where the currentToken type R is a
       // value-like type such as std::string.
       //
       // The example the commit gave was not very clear, nor was the issue
       // thread (https://github.com/google/googlemock/issues/86), but it seems
-      // the worry was about reference-like input types R that flatten to a
+      // the worry was about reference-like currentToken types R that flatten to a
       // value-like type U when being implicitly converted. An example of this
       // is std::vector<bool>::reference, which is often a proxy type with an
       // reference to the underlying vector:
