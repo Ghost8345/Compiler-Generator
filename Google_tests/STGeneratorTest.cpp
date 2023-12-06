@@ -115,5 +115,6 @@ TEST(STGeneration, WithoutCombinedStates){
     S.addTransition(Transition(c,&V));
 
     DFA joeDFA(&A);
-
+    STGenerator stg(joeDFA);
+    stg.execute("D:\\Projects\\CSED Projects\\Compiler-Generator\\Google_tests\\STGenerator-TestSample1");
 }

@@ -3101,7 +3101,7 @@ Remember the steps for using a mock:
 2.  Set its default actions and expectations using `ON_CALL()` and
     `EXPECT_CALL()`.
 3.  The code under test calls methods of `foo`.
-4.  Optionally, verify and reset the mock.
+4.  Optionally, verify and newTokenReset the mock.
 5.  Destroy the mock yourself, or let the code under test destroy it. The
     destructor will automatically verify it.
 

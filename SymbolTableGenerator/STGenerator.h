@@ -21,7 +21,7 @@ private:
     std::vector<SyntaxError> errors;
     State* currentState;
 
-    void reset();
+    void newTokenReset();
     void tokenUnlocked();
     [[nodiscard]] bool noMatchesFoundYet() const;
     bool reachedDeadEnd();
@@ -31,6 +31,10 @@ public:
     explicit STGenerator(DFA &dfa);
     void execute(const std::string& scriptFilePath);
     bool foundMatch();
+
+    void printOutput();
+
+    void newInputReset();
 };
 
 #endif //COMPILER_STGENERATOR_H
