@@ -8,7 +8,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         STGenerator.cpp
         STRow.cpp
-        SyntaxError.cpp)
+        SyntaxError.cpp LAOutput.cpp LAOutput.h LATrace.cpp LATrace.h)
 
 
 add_library(SymbolTableGenerator_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
