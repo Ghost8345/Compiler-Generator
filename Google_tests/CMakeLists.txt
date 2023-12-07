@@ -8,6 +8,7 @@ add_executable(Google_Tests_run UtilsTest.cpp
         NFATest.cpp
         IntegrationTest.cpp
         STGeneratorTest.cpp)
+        IntegrationTest.cpp)
 
 target_link_libraries(Google_Tests_run gtest gtest_main)
 target_link_libraries(Google_Tests_run Util_lib)
