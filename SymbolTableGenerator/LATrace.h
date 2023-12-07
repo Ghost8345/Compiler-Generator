@@ -11,11 +11,11 @@ class LATrace {
 private:
     char inputChar;
     std::string tokenName;
-    bool isEndOfToken;
+    bool isEndOfToken{};
 
 public:
     explicit LATrace(char inputChar);
-    explicit LATrace(char inputChar, std::string tokenName, bool isEndOfToken);
+    explicit LATrace(char inputChar, std::string tokenName, bool isEndOfToken=false);
     friend std::ostream& operator<<(std::ostream& os, const LATrace& lat);
 };
 

@@ -9,6 +9,6 @@ STRow::STRow(std::string token,std::string tokenType)
         : token(std::move(token)),tokenType(std::move(tokenType)) {}
 
 std::ostream& operator<<(std::ostream& os, const STRow& strow){
-    os << strow.token << " --> " << strow.tokenType;
+    os << strow.token << " --> " << strow.tokenType << "\n";;
     return os;
 }

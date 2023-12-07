@@ -8,6 +8,7 @@
 #include "../DFAConverter/DFA.h"
 #include "STRow.h"
 #include "SyntaxError.h"
+#include "LAOutput.h"
 
 class STGenerator {
 private:
@@ -22,7 +23,7 @@ private:
     void readScriptFile(const std::string& filepath);
     void newInputReset();
     void newTokenReset();
-    void tokenUnlocked();
+    void tokenUnlocked(std::vector<STRow> symbolTable);
     void getStartState();
     [[nodiscard]] bool noMatchesFoundYet() const;
     [[nodiscard]] bool reachedDeadEnd();
@@ -31,7 +32,7 @@ private:
 
 public:
     explicit STGenerator(DFA &dfa);
-    void execute(const std::string& scriptFilePath);
+    LAOutput execute(const std::string& scriptFilePath);
 };
 
 #endif //COMPILER_STGENERATOR_H

@@ -10,7 +10,10 @@
 
 STGenerator::STGenerator(DFA &dfa) : dfa(std::move(dfa)) {}
 
-void STGenerator::execute(const std::string& scriptFilePath){
+LAOutput STGenerator::execute(const std::string& scriptFilePath){
+    std::vector<LATrace> trace;
+    std::vector<STRow> symbolTable;
+    std::vector<SyntaxError> errors;
     newInputReset();
     readScriptFile(scriptFilePath);
     while (currentCharIdx!=input.size()){
@@ -22,7 +25,7 @@ void STGenerator::execute(const std::string& scriptFilePath){
                 errors.push_back(e);
             }else{
                 currentCharIdx = lastMatchIdx;
-                tokenUnlocked();
+                tokenUnlocked(symbolTable);
             }
         }else if (foundMatch()){
             lastMatchIdx = currentCharIdx;
@@ -30,6 +33,9 @@ void STGenerator::execute(const std::string& scriptFilePath){
         }
         currentCharIdx ++;
     }
+    LAOutput lao = LAOutput(symbolTable, errors, trace);
+    std::cout << lao;
+    return lao;
 }
 
 void STGenerator::newTokenReset() {
@@ -44,7 +50,7 @@ void STGenerator::newInputReset() {
     newTokenReset();
 }
 
-void STGenerator::tokenUnlocked() {
+void STGenerator::tokenUnlocked(std::vector<STRow> symbolTable) {
     STRow strow(input.substr(tokenStartIdx,lastMatchIdx+1),lastMatchedTokenType);
     symbolTable.push_back(strow);
     newTokenReset();

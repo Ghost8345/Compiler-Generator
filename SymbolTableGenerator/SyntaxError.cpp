@@ -12,6 +12,6 @@ SyntaxError::SyntaxError(int st,int ed) {
 }
 
 std::ostream& operator<<(std::ostream& os, const SyntaxError& se){
-    os << "Syntax Error in the following indices range:" << se.startIdx << " --> " << se.endIdx;
+    os << "Syntax Error in the following indices range:" << se.startIdx << " --> " << se.endIdx << "\n";
     return os;
 }
