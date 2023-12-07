@@ -15,11 +15,13 @@ LATrace::LATrace(char inputChar) {
 }
 
 std::ostream &operator<<(std::ostream &os, const LATrace &lat) {
+    if (lat.isEndOfToken)
+        os << "______________________\n";
     os << lat.inputChar << " --> ";
     if (!lat.tokenName.empty())
         os << lat.tokenName;
     if (lat.isEndOfToken)
-        os << "✅";
+        os << "❎";
     os << "\n";
     return os;
 }

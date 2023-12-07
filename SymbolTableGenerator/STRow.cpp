@@ -12,3 +12,11 @@ std::ostream& operator<<(std::ostream& os, const STRow& strow){
     os << strow.token << " --> " << strow.tokenType << "\n";;
     return os;
 }
+
+const std::string &STRow::getToken() const {
+    return token;
+}
+
+const std::string &STRow::getTokenType() const {
+    return tokenType;
+}

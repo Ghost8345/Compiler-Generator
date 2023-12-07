@@ -16,20 +16,30 @@ LAOutput STGenerator::execute(const std::string& scriptFilePath){
     std::vector<SyntaxError> errors;
     newInputReset();
     readScriptFile(scriptFilePath);
+    input += TERMINAL_SYMBOL;
     while (currentCharIdx!=input.size()){
         char c = input[currentCharIdx];
-        currentState = currentState->moveTo(c);
-        if (reachedDeadEnd()){
+        if (reachedDeadEnd(c)){
             if (noMatchesFoundYet()){
-                SyntaxError e(tokenStartIdx,currentCharIdx);
-                errors.push_back(e);
+                if (notTerminalSymbol()) {
+                    SyntaxError e(tokenStartIdx);
+                    errors.push_back(e);
+                    recover();
+                }
             }else{
                 currentCharIdx = lastMatchIdx;
                 tokenUnlocked(symbolTable);
+                trace.emplace_back(LATrace(c,"",true));
             }
-        }else if (foundMatch()){
-            lastMatchIdx = currentCharIdx;
-            lastMatchedTokenType = currentState->tokenName;
+        }else{
+            currentState = currentState->moveTo(c);
+            if (foundMatch()){
+                trace.emplace_back(LATrace(c,currentState->tokenName));
+                lastMatchIdx = currentCharIdx;
+                lastMatchedTokenType = currentState->tokenName;
+            }else{
+                trace.emplace_back(LATrace(c));
+            }
         }
         currentCharIdx ++;
     }
@@ -45,13 +55,20 @@ void STGenerator::newTokenReset() {
     lastMatchIdx = -1;
 }
 
+void STGenerator::recover() {
+    getStartState();
+    tokenStartIdx = currentCharIdx+1;
+}
+
+
 void STGenerator::newInputReset() {
     input = "";
+    currentCharIdx = 0;
     newTokenReset();
 }
 
-void STGenerator::tokenUnlocked(std::vector<STRow> symbolTable) {
-    STRow strow(input.substr(tokenStartIdx,lastMatchIdx+1),lastMatchedTokenType);
+void STGenerator::tokenUnlocked(std::vector<STRow>& symbolTable) {
+    STRow strow(input.substr(tokenStartIdx,lastMatchIdx-tokenStartIdx+1),lastMatchedTokenType);
     symbolTable.push_back(strow);
     newTokenReset();
 }
@@ -60,8 +77,8 @@ bool STGenerator::noMatchesFoundYet() const {
     return lastMatchIdx==-1;
 }
 
-bool STGenerator::reachedDeadEnd() {
-    return currentState== nullptr;
+bool STGenerator::reachedDeadEnd(char c) {
+    return currentState->moveTo(c)== nullptr;
 }
 
 void STGenerator::readScriptFile(const std::string &filepath) {
@@ -82,6 +99,10 @@ bool STGenerator::foundMatch() {
 
 void STGenerator::getStartState(){
     currentState = dfa.getStartState();
+}
+
+bool STGenerator::notTerminalSymbol() {
+    return currentCharIdx!=input.size()-1;
 }
 
 

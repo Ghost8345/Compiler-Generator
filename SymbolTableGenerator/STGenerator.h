@@ -16,6 +16,7 @@ private:
     int currentCharIdx = 0;
     int lastMatchIdx = -1;
     int tokenStartIdx = 0;
+    std::string TERMINAL_SYMBOL = "$";
     std::string input;
     std::string lastMatchedTokenType;
     State* currentState{};
@@ -23,11 +24,14 @@ private:
     void readScriptFile(const std::string& filepath);
     void newInputReset();
     void newTokenReset();
-    void tokenUnlocked(std::vector<STRow> symbolTable);
+    void tokenUnlocked(std::vector<STRow>& symbolTable);
     void getStartState();
+    void recover();
     [[nodiscard]] bool noMatchesFoundYet() const;
-    [[nodiscard]] bool reachedDeadEnd();
+    [[nodiscard]] bool reachedDeadEnd(char c);
     [[nodiscard]] bool foundMatch();
+    [[nodiscard]] bool notTerminalSymbol();
+
 
 
 public:

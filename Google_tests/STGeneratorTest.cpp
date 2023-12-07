@@ -5,8 +5,12 @@
 #include "gtest/gtest.h"
 #include "../SymbolTableGenerator//STGenerator.h"
 #include <string>
+#include <filesystem>
 
-TEST(STGeneration, WithoutCombinedStates){
+
+
+TEST(STGeneration, MultipleCaseTest){
+    _chdir("../../Google_tests");
     /// T1 : a?(b|c)*a
     /// T2 : b?(a|c)*b
     /// T3 : c?(a|b)*c
@@ -26,13 +30,13 @@ TEST(STGeneration, WithoutCombinedStates){
     State F(TOKEN_2);
     State G(TOKEN_3);
     State H;
-    State I(TOKEN_1);
-    State J(TOKEN_2);
-    State K(TOKEN_3);
+    State I(TOKEN_2);
+    State J(TOKEN_3);
+    State K(TOKEN_1);
     State L;
-    State M(TOKEN_1);
-    State N(TOKEN_2);
-    State O(TOKEN_3);
+    State M(TOKEN_3);
+    State N(TOKEN_1);
+    State O(TOKEN_2);
     State P;
     State Q;
     State R;
@@ -86,6 +90,10 @@ TEST(STGeneration, WithoutCombinedStates){
     L.addTransition(Transition(b,&L));
     L.addTransition(Transition(c,&M));
 
+    K.addTransition(Transition(a,&S));
+    K.addTransition(Transition(b,&S));
+    K.addTransition(Transition(c,&V));
+
     M.addTransition(Transition(a,&T));
     M.addTransition(Transition(b,&Q));
     M.addTransition(Transition(c,&Q));
@@ -116,5 +124,21 @@ TEST(STGeneration, WithoutCombinedStates){
 
     DFA joeDFA(&A);
     STGenerator stg(joeDFA);
-    stg.execute("D:\\Projects\\CSED Projects\\Compiler-Generator\\Google_tests\\STGenerator-TestSample1");
+
+    LAOutput lao = stg.execute("STGenerator Test Samples/1");/// bbaacabc
+    std::vector<STRow> ST = lao.getSymbolTable();
+    ASSERT_EQ(ST.size(),2);
+    ASSERT_EQ(ST[0].getToken(),"bbaac");ASSERT_EQ(ST[0].getTokenType(),"T3");
+    ASSERT_EQ(ST[1].getToken(),"abc");ASSERT_EQ(ST[1].getTokenType(),"T3");
+    ASSERT_EQ(lao.getErrors().size(),0);
+
+    lao = stg.execute("STGenerator Test Samples/2");/// bb$aa%cgabcdddddc
+    ST = lao.getSymbolTable();
+    ASSERT_EQ(ST.size(),5);
+    ASSERT_EQ(ST[0].getToken(),"bb");ASSERT_EQ(ST[0].getTokenType(),TOKEN_2);
+    ASSERT_EQ(ST[1].getToken(),"aa");ASSERT_EQ(ST[1].getTokenType(),TOKEN_1);
+    ASSERT_EQ(ST[2].getToken(),"c");ASSERT_EQ(ST[2].getTokenType(),TOKEN_3);
+    ASSERT_EQ(ST[3].getToken(),"abc");ASSERT_EQ(ST[3].getTokenType(),TOKEN_3);
+    ASSERT_EQ(ST[4].getToken(),"c");ASSERT_EQ(ST[4].getTokenType(),TOKEN_3);
+    ASSERT_EQ(lao.getErrors().size(),8);
 }

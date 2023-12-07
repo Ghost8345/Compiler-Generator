@@ -25,3 +25,15 @@ std::ostream &operator<<(std::ostream &os, const LAOutput &lao) {
     return os;
 }
 
+const std::vector<STRow> &LAOutput::getSymbolTable() const {
+    return symbolTable;
+}
+
+const std::vector<SyntaxError> &LAOutput::getErrors() const {
+    return errors;
+}
+
+const std::vector<LATrace> &LAOutput::getTrace() const {
+    return trace;
+}
+
