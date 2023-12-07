@@ -141,4 +141,14 @@ TEST(STGeneration, MultipleCaseTest){
     ASSERT_EQ(ST[3].getToken(),"abc");ASSERT_EQ(ST[3].getTokenType(),TOKEN_3);
     ASSERT_EQ(ST[4].getToken(),"c");ASSERT_EQ(ST[4].getTokenType(),TOKEN_3);
     ASSERT_EQ(lao.getErrors().size(),8);
+
+    lao = stg.execute("STGenerator Test Samples/3");/// #3aaaaaaaabbbbcccbcbcbaaab%qaabc
+    ST = lao.getSymbolTable();
+    ASSERT_EQ(ST.size(),4);
+    ASSERT_EQ(ST[0].getToken(),"aaaaaaaabbbbc");ASSERT_EQ(ST[0].getTokenType(),TOKEN_3);
+    ASSERT_EQ(ST[1].getToken(),"ccbcbcba");ASSERT_EQ(ST[1].getTokenType(),TOKEN_1);
+    ASSERT_EQ(ST[2].getToken(),"aab");ASSERT_EQ(ST[2].getTokenType(),TOKEN_2);
+    ASSERT_EQ(ST[3].getToken(),"aabc");ASSERT_EQ(ST[3].getTokenType(),TOKEN_3);
+    ASSERT_EQ(lao.getErrors().size(),4);
+
 }
