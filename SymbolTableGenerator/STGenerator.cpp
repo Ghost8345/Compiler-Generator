@@ -22,9 +22,10 @@ LAOutput STGenerator::execute(const std::string& scriptFilePath){
         if (reachedDeadEnd(c)){
             if (noMatchesFoundYet()){
                 if (notTerminalSymbol()) {
-                    SyntaxError e(tokenStartIdx);
-                    errors.push_back(e);
-                    recover();
+                    if (isNotSkippable(c)) {
+                        SyntaxError e(tokenStartIdx,c);
+                        errors.push_back(e);
+                    }
                 }
             }else{
                 currentCharIdx = lastMatchIdx;
@@ -46,6 +47,12 @@ LAOutput STGenerator::execute(const std::string& scriptFilePath){
     LAOutput lao = LAOutput(symbolTable, errors, trace);
     std::cout << lao;
     return lao;
+}
+
+bool STGenerator::isNotSkippable(char c) {
+    if (isspace(c))
+        return false;
+    return true;
 }
 
 void STGenerator::newTokenReset() {
