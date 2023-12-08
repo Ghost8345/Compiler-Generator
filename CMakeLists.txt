@@ -12,7 +12,6 @@ target_link_libraries(Compiler DFAConverter_lib)
 target_link_libraries(Compiler SymbolTableGenerator_lib)
 
 
-
 add_subdirectory(Util)
 add_subdirectory(RulesParser)
 add_subdirectory(Google_tests)

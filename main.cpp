@@ -1,7 +1,7 @@
 #include <iostream>
+#include <unordered_map>
 #include "RulesParser/RulesConverter.h"
 #include "NFAConverter/NFACombiner.h"
-#include "SymbolTableGenerator/STGenerator.h"
 
 int main(int argc, char *argv[]) {
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
     // Regular expressions conversion to NFA
     NFACombiner nfaCombiner(regularExpressions);
-    std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> table = nfaCombiner.extractTableRepresentation();
+    std::unordered_map<std::pair<State*, char>, std::vector<State*>, PairHash, PairEqual> table = nfaCombiner.extractTableRepresentation();
     State* nfaComplete = nfaCombiner.getCompleteNfa();
 
     std::cout << nfaComplete->transitions.size() << '\n';

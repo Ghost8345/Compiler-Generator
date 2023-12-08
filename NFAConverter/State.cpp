@@ -23,3 +23,4 @@ State::State(const std::string& tokenName) {
     this->isFinal = true;
     this->tokenName = tokenName;
 }
+

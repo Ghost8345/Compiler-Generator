@@ -2,6 +2,7 @@
 // Created by deffo on 02/12/23.
 //
 
+#include <unordered_map>
 #include "NFACombiner.h"
 
 NFACombiner::NFACombiner(std::vector<RegularExpression>& regExps) {
@@ -14,20 +15,20 @@ NFACombiner::NFACombiner(std::vector<RegularExpression>& regExps) {
     this->completeNfa = initial;
 }
 
-std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> NFACombiner::extractTableRepresentation() {
-    std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> table;
+std::unordered_map<std::pair<State*, char>, std::vector<State*>, PairHash, PairEqual> NFACombiner::extractTableRepresentation() {
+    std::unordered_map<std::pair<State*, char>, std::vector<State*>, PairHash, PairEqual> table;
     std::stack<State*> frontier;
     std::unordered_map<State*, int> visited;
     frontier.push(completeNfa);
     while (not frontier.empty()) {
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
         for (Transition transition: currentState->transitions) {
-            table[std::pair(currentState, transition.getInput())] = transition.getNextState();
+            table[std::pair(currentState, transition.getInput())].push_back(transition.getNextState());
             frontier.push(transition.getNextState());
         }
     }
