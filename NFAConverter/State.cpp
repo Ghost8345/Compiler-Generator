@@ -42,3 +42,4 @@ State::State(std::unordered_set<State*> states) {
 bool comparePriority(const State& s1, const State& s2) {
     return s1.priority > s2.priority;
 }
+

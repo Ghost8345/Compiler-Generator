@@ -45,8 +45,8 @@ struct StatePtrSetHash {
 };
 
 struct StatePtrSetEquality {
-    template <typename T>
-    std::size_t operator()(const std::unordered_set<T>& a, const std::unordered_set<T>& b) const {
+    template<typename T>
+    std::size_t operator()(const std::unordered_set<T> &a, const std::unordered_set<T> &b) const {
         if (a.size() != b.size())
             return false;
 
