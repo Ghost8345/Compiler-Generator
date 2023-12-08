@@ -4,8 +4,6 @@
 
 #include "DFA.h"
 
-DFA::DFA(NFA &nfa) : nfa(std::move(nfa)) {}
-
 State *DFA::getStartState() {
     return startState;
 }
@@ -15,7 +13,7 @@ DFA::DFA(State *startState) {
     this->startState = convertToDFA(startState, alphabet);
 }
 
-State* DFA::convertToDFA(State* nfaStartState, std::unordered_set<char> alphabet) {   
+State* DFA::convertToDFA(State* nfaStartState, const std::unordered_set<char>& alphabet) {
     std::stack<std::unordered_set<State*>> unmarked;
     std::unordered_map<std::unordered_set<State*>, State*, StatePtrSetHash, StatePtrSetEquality> mapping;
     
@@ -38,8 +36,10 @@ State* DFA::convertToDFA(State* nfaStartState, std::unordered_set<char> alphabet
                 unmarked.push(U);
                 mapping[U] = new State(U);
             }
-            
-            mapping[T]->addTransition(Transition(a, mapping[U]));
+
+            Transition transition(a, mapping[U]);
+            this->transitionTable[{mapping[T], a}] = mapping[U];
+            mapping[T]->addTransition(transition);
         }
     }
     

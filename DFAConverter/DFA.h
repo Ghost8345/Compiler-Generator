@@ -6,6 +6,7 @@
 #define COMPILER_DFA_H
 
 #include "../NFAConverter/State.h"
+#include "../NFAConverter/NFACombiner.h"
 #include "../NFAConverter/NFA.h"
 #include <vector>
 #include <unordered_set>
@@ -14,18 +15,16 @@
 
 #define EPSILON '\0'
 
+typedef std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual> TransitionTable;
+
 class DFA {
 private:
-    NFA nfa;
     State* startState{};
-    State* convertToDFA(State* nfaStartState, std::unordered_set<char> alphabet);
+    State* convertToDFA(State* nfaStartState, const std::unordered_set<char>& alphabet);
 public:
-    explicit DFA(NFA &nfa);
+    TransitionTable transitionTable;
     explicit DFA(State* startState);
     State* getStartState();
-
-
-
 };
 
 std::unordered_set<char> getAlphabet(State* startState);

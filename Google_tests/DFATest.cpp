@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include "../DFAConverter/DFA.h"
 
-TEST(NFAToDFAConversion, SimpleCase) {
+TEST(NFAToDFAConversion, TestCase1) {
     State* q0 = new State("N1");
     State* q1 = new State();
 
