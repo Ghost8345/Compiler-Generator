@@ -6,20 +6,23 @@
 #define COMPILER_STATE_H
 
 #include <vector>
+#include <unordered_set>
 #include "Transition.h"
 
 class Transition;
 
 class State {
-    public:
-        std::vector<Transition> transitions;
-        bool isFinal;
-        std::string tokenName;
-        int priority;
+public:
+    std::vector<Transition> transitions;
+    bool isFinal;
+    std::string tokenName;
+    int priority;
 
-        State();
-        void addTransition(Transition transition);
-
+    State();
+    State(const std::string& tokenName);
+    State(std::unordered_set<State*> states);
+    void addTransition(Transition transition);
+    State* moveTo(char input);
 };
 
 
