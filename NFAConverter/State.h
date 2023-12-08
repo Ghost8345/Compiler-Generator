@@ -17,7 +17,6 @@ public:
     bool isFinal;
     std::string tokenName;
     int priority;
-
     State();
     State(const std::string& tokenName);
     State(std::unordered_set<State*> states);
