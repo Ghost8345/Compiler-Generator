@@ -70,7 +70,7 @@ So please be aware of the different definitions of the terms:
 
 Meaning                                                                              | GoogleTest Term         | [ISTQB](https://www.istqb.org/) Term
 :----------------------------------------------------------------------------------- | :---------------------- | :----------------------------------
-Exercise a particular program path with specific currentToken values and verify the results | [TEST()](#simple-tests) | [Test Case][istqb test case]
+Exercise a particular program path with specific input values and verify the results | [TEST()](#simple-tests) | [Test Case][istqb test case]
 
 
 [istqb test case]: https://glossary.istqb.org/en/search/test%20case
