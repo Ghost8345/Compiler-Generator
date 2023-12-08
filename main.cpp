@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
         visited[currentState] = 1;
         for(Transition transition: currentState->transitions){
             frontier.push(transition.getNextState());
+            std::cout << currentState << " with input: " << transition.getInput() << " ,to state: " << transition.getNextState() << '\n';
         }
     }
     std::cout << "num of DFA states: " << states << '\n';
