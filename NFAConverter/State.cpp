@@ -44,8 +44,3 @@ State::State(std::unordered_set<State*> states) {
 
     this->tokenName = highestPriorityState->tokenName;
 }
-
-bool comparePriority(const State& s1, const State& s2) {
-    return s1.priority > s2.priority;
-}
-
