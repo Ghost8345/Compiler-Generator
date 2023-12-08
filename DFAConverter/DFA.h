@@ -19,18 +19,25 @@ typedef std::unordered_map<std::pair<State*, char>, State*, PairHash, PairEqual>
 
 class DFA {
 private:
+    std::unordered_set<char> alphabet;
     State* startState{};
     State* convertToDFA(State* nfaStartState, const std::unordered_set<char>& alphabet);
+    State* minimize(const std::unordered_set<State*> &finalStates,
+                    const std::unordered_set<State*> &nonFinalStates,
+                    const std::unordered_set<char> &alphabet);
 public:
     TransitionTable transitionTable;
     explicit DFA(State* startState);
     State* getStartState();
+    State* minimize();
 };
 
 std::unordered_set<char> getAlphabet(State* startState);
 std::unordered_set<State*> epsilonClosure(State* state);
 std::unordered_set<State*> epsilonClosure(const std::unordered_set<State*>& states);
 std::unordered_set<State*> move(const std::unordered_set<State*>& states, char symbol);
+std::vector<State*> allStates(State* startState);
+TransitionTable createTransitionTable(const std::vector<State*> &states);
 
 
 struct StatePtrSetHash {

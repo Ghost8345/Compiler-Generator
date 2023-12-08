@@ -102,3 +102,144 @@ TEST(NFAToDFAConversion, TestCase2) {
 
     ASSERT_EQ(states.size(), 4);
 }
+
+TEST(MinimizeDFA, MTestCase1) {
+    State* A = new State();
+    State* B = new State();
+    State* C = new State();
+    State* D = new State();
+    State* E = new State("E");
+
+    A->addTransition(Transition('a', B));
+    A->addTransition(Transition('b', C));
+
+    B->addTransition(Transition('a', B));
+    B->addTransition(Transition('b', D));
+
+    C->addTransition(Transition('a', B));
+    C->addTransition(Transition('b', C));
+
+    D->addTransition(Transition('a', B));
+    D->addTransition(Transition('b', E));
+
+    E->addTransition(Transition('a', B));
+    E->addTransition(Transition('b', C));
+
+
+    DFA dfa(A);
+    State* s0 = dfa.getStartState();
+
+    State* m0 = dfa.minimize();
+
+    int numOfStates = 0;
+    std::stack<State*> frontier;
+    std::unordered_map<State*, int> visited;
+    frontier.push(m0);
+    while(not frontier.empty()){
+        State* currentState = frontier.top();
+        frontier.pop();
+        if(visited.find(currentState) != visited.end()){
+            continue;
+        }
+        visited[currentState] = 1;
+        for(Transition transition: currentState->transitions){
+            frontier.push(transition.getNextState());
+        }
+        numOfStates++;
+    }
+
+    ASSERT_EQ(numOfStates, 4);
+}
+
+TEST(MinimizeDFA, MTestCase2) {
+    State* q1 = new State("Start and final");
+    State* q2 = new State();
+    State* q3 = new State();
+    State* q4 = new State();
+    State* q5 = new State("Final");
+
+    q1->addTransition(Transition('a', q3));
+    q1->addTransition(Transition('b', q2));
+
+    q2->addTransition(Transition('a', q4));
+    q2->addTransition(Transition('b', q1));
+
+    q3->addTransition(Transition('a', q5));
+    q3->addTransition(Transition('b', q4));
+
+    q4->addTransition(Transition('a', q4));
+    q4->addTransition(Transition('b', q4));
+
+    q5->addTransition(Transition('a', q3));
+    q5->addTransition(Transition('b', q2));
+
+    DFA dfa(q1);
+
+    State* m0 = dfa.minimize();
+
+    int numOfStates = 0;
+    std::stack<State*> frontier;
+    std::unordered_map<State*, int> visited;
+    frontier.push(m0);
+    while(not frontier.empty()){
+        State* currentState = frontier.top();
+        frontier.pop();
+        if(visited.find(currentState) != visited.end()){
+            continue;
+        }
+        visited[currentState] = 1;
+        for(Transition transition: currentState->transitions){
+            frontier.push(transition.getNextState());
+        }
+        numOfStates++;
+    }
+
+    ASSERT_EQ(numOfStates, 4);
+}
+
+TEST(MinimizeDFA, MTestCase3) {
+    State* q0 = new State();
+    State* q1 = new State();
+    State* q2 = new State();
+    State* q3 = new State("final 3");
+    State* q4 = new State("final 4");
+
+    q0->addTransition(Transition('0', q1));
+    q0->addTransition(Transition('1', q2));
+
+    q1->addTransition(Transition('0', q2));
+    q1->addTransition(Transition('1', q3));
+
+    q2->addTransition(Transition('0', q2));
+    q2->addTransition(Transition('1', q4));
+
+    q3->addTransition(Transition('0', q3));
+    q3->addTransition(Transition('1', q3));
+
+    q4->addTransition(Transition('0', q4));
+    q4->addTransition(Transition('1', q4));
+
+
+    DFA dfa(q0);
+
+    State* m0 = dfa.minimize();
+
+    int numOfStates = 0;
+    std::stack<State*> frontier;
+    std::unordered_map<State*, int> visited;
+    frontier.push(m0);
+    while(not frontier.empty()){
+        State* currentState = frontier.top();
+        frontier.pop();
+        if(visited.find(currentState) != visited.end()){
+            continue;
+        }
+        visited[currentState] = 1;
+        for(Transition transition: currentState->transitions){
+            frontier.push(transition.getNextState());
+        }
+        numOfStates++;
+    }
+
+    ASSERT_EQ(numOfStates, 3);
+}
