@@ -3101,7 +3101,7 @@ Remember the steps for using a mock:
 2.  Set its default actions and expectations using `ON_CALL()` and
     `EXPECT_CALL()`.
 3.  The code under test calls methods of `foo`.
-4.  Optionally, verify and newTokenReset the mock.
+4.  Optionally, verify and reset the mock.
 5.  Destroy the mock yourself, or let the code under test destroy it. The
     destructor will automatically verify it.
 
@@ -3827,7 +3827,7 @@ function. So you can use a lambda:
 
 ```cpp
 MockFunction<int(int)> mock;
-EXPECT_CALL(mock, Call).WillOnce([](const int currentToken) { return currentToken * 7; });
+EXPECT_CALL(mock, Call).WillOnce([](const int input) { return input * 7; });
 EXPECT_EQ(mock.AsStdFunction()(2), 14);
 ```
 
@@ -3875,7 +3875,7 @@ EXPECT_THAT(mock.AsStdFunction()(), Pointee(Eq(17)));
 More generally, to use with a mock function whose signature is `R(Args...)` the
 object can be anything convertible to `OnceAction<R(Args...)>` or
 `Action<R(Args...)`>. The difference between the two is that `OnceAction` has
-weaker requirements (`Action` requires a copy-constructible currentToken that can be
+weaker requirements (`Action` requires a copy-constructible input that can be
 called repeatedly whereas `OnceAction` requires only move-constructible and
 supports `&&`-qualified call operators), but can be used only with `WillOnce`.
 `OnceAction` is typically relevant only when supporting move-only types or

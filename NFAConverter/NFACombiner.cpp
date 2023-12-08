@@ -2,6 +2,7 @@
 // Created by deffo on 02/12/23.
 //
 
+#include <unordered_map>
 #include "NFACombiner.h"
 
 NFACombiner::NFACombiner(std::vector<RegularExpression>& regExps) {
@@ -22,7 +23,7 @@ std::unordered_map<std::pair<State*, char>, std::vector<State*>, PairHash, PairE
     while (not frontier.empty()) {
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;

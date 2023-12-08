@@ -658,7 +658,7 @@ class GTEST_API_ TestInfo {
   internal::TestFactoryBase* const factory_;  // The factory that creates
                                               // the test object
 
-  // This field is mutable and needs to be newTokenReset before running the
+  // This field is mutable and needs to be reset before running the
   // test for the second time.
   TestResult result_;
 

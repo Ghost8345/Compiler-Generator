@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_map>
 #include "RulesParser/RulesConverter.h"
 #include "NFAConverter/NFACombiner.h"
 

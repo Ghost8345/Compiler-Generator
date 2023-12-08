@@ -769,7 +769,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
   write_handle_.Reset(write_handle);
   event_handle_.Reset(::CreateEvent(
       &handles_are_inheritable,
-      TRUE,       // The event will automatically newTokenReset to non-signaled state.
+      TRUE,       // The event will automatically reset to non-signaled state.
       FALSE,      // The initial state is non-signalled.
       nullptr));  // The even is unnamed.
   GTEST_DEATH_TEST_CHECK_(event_handle_.Get() != nullptr);

@@ -44,7 +44,7 @@ TEST(RegexToNfaConversion, SimpleKleeneClosure){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -76,7 +76,7 @@ TEST(RegexToNfaConversion, SimplePositiveClosure){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -109,7 +109,7 @@ TEST(RegexToNfaConversion, SimpleDisjunction){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -142,7 +142,7 @@ TEST(RegexToNfaConversion, SimpleSkipCharacters){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -174,7 +174,7 @@ TEST(RegexToNfaConversion, DisjunctionWithConcatenation){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -207,7 +207,7 @@ TEST(RegexToNfaConversion, DisjunctionWithKleeneClosure){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;
@@ -240,7 +240,7 @@ TEST(RegexToNfaConversion, DisjunctionContainsEpsilonWithKleeneClosure){
     while(not frontier.empty()){
         State* currentState = frontier.top();
         frontier.pop();
-        if(visited.contains(currentState)){
+        if(visited.find(currentState) != visited.end()){
             continue;
         }
         visited[currentState] = 1;

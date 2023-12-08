@@ -21,7 +21,6 @@ class State {
         State(const std::string& tokenName);
         void addTransition(Transition transition);
         State* moveTo(char input);
-        void addTransition(Transition transition);
 
 };
 
