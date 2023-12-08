@@ -8,6 +8,7 @@
 
 SyntaxError::SyntaxError(int st, char c) {
     this->idx = st;
+    this->c = c;
 }
 
 std::ostream& operator<<(std::ostream& os, const SyntaxError& se){

@@ -26,6 +26,7 @@ LAOutput STGenerator::execute(const std::string& scriptFilePath){
                         SyntaxError e(tokenStartIdx,c);
                         errors.push_back(e);
                     }
+                    recover();
                 }
             }else{
                 currentCharIdx = lastMatchIdx;

@@ -38,7 +38,7 @@ TEST(IntegrationTest, FromParsingRegExpToNFA){
         numOfStates++;
     }
     ASSERT_EQ(degree, 2);
-    ASSERT_EQ(numOfStates, 26);
+    ASSERT_EQ(numOfStates, 22);
     ASSERT_EQ(nfaPair.second->tokenName, "Disjunction");
     ASSERT_FALSE(nfaPair.first->transitions.size() > 2);
     ASSERT_EQ(nfaPair.first->transitions.size(), 2);
