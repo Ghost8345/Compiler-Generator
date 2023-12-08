@@ -29,9 +29,10 @@ State::State(std::unordered_set<State*> states) {
     State* highestPriorityState = *(states.begin());
 
     for (State* state: states) {
-        if (state->priority > highestPriorityState->priority)
-            highestPriorityState = state;
-
+        if(state->isFinal){
+            if (state->priority > highestPriorityState->priority)
+                highestPriorityState = state;
+        }
         this->isFinal |= state->isFinal;
     }
 
