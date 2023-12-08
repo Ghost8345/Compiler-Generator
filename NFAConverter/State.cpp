@@ -25,6 +25,7 @@ State::State(const std::string& tokenName) {
 }
 
 State::State(std::unordered_set<State*> states) {
+    this->isFinal = false;
     State* highestPriorityState = *(states.begin());
 
     for (State* state: states) {

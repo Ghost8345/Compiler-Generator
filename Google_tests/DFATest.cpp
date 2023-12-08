@@ -7,6 +7,7 @@
 
 TEST(NFAToDFAConversion, TestCase1) {
     State* q0 = new State("N1");
+    q0->priority = 2;
     State* q1 = new State();
 
     q0->addTransition(Transition('b', q0));

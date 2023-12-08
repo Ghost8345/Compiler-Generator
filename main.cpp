@@ -1,6 +1,8 @@
 #include <iostream>
 #include "RulesParser/RulesConverter.h"
 #include "NFAConverter/NFACombiner.h"
+#include "DFAConverter/DFA.h"
+
 int main(int argc, char *argv[]) {
 
     if (argc != 2){
@@ -26,8 +28,28 @@ int main(int argc, char *argv[]) {
     std::unordered_map<std::pair<State*, char>, std::vector<State*>, PairHash, PairEqual> table = nfaCombiner.extractTableRepresentation();
     State* nfaComplete = nfaCombiner.getCompleteNfa();
 
-    std::cout << nfaComplete->transitions.size() << '\n';
+    std::cout << "degree of the start state in NFA: " << nfaComplete->transitions.size() << '\n';
 
+    DFA dfa(nfaComplete);
+    State* dfaStartState = dfa.getStartState();
+
+    int states = 0;
+    std::stack<State*> frontier;
+    std::unordered_map<State*, int> visited;
+    frontier.push(dfaStartState);
+    while(not frontier.empty()){
+        State* currentState = frontier.top();
+        frontier.pop();
+        if(visited.find(currentState) != visited.end()){
+            continue;
+        }
+        states += 1;
+        visited[currentState] = 1;
+        for(Transition transition: currentState->transitions){
+            frontier.push(transition.getNextState());
+        }
+    }
+    std::cout << "num of DFA states: " << states << '\n';
 
     return 0;
 }
