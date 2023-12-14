@@ -30,35 +30,7 @@ State* DFA::minimize() {
 }
 
 State* DFA::convertToDFA(State* nfaStartState, const std::unordered_set<char>& alphabet) {
-    std::stack<std::unordered_set<State*>> unmarked;
-    std::unordered_map<std::unordered_set<State*>, State*, StatePtrSetHash, StatePtrSetEquality> mapping;
-    
-    std::unordered_set<State*> startStates = epsilonClosure(nfaStartState);
-    State* dfaStartState = new State(startStates);
-    mapping[startStates] = dfaStartState;
-    unmarked.push(startStates);
-    
-    while (!unmarked.empty()) {
-        std::unordered_set<State*> T = unmarked.top(); unmarked.pop();
-        
-        for (char a: alphabet) {
-            if (a == EPSILON) continue;
-
-            std::unordered_set<State*> U = epsilonClosure(move(T,a));
-
-            if (U.empty()) continue;
-
-            if (mapping.find(U) == mapping.end()) {
-                unmarked.push(U);
-                mapping[U] = new State(U);
-            }
-
-            Transition transition(a, mapping[U]);
-            this->transitionTable[{mapping[T], a}] = mapping[U];
-            mapping[T]->addTransition(transition);
-        }
-    }
-    
+    State* dfaStartState;
     return dfaStartState;
 }
 
